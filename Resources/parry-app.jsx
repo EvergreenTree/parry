@@ -1,9 +1,7 @@
 const {
-  DesignCanvas, DCSection, DCArtboard,
   IOSDevice, ChromeWindow,
-  TweaksPanel, TweakSection, TweakColor, useTweaks,
-  PhoneCentered, PhoneEditorial, PhoneDark,
-  DesktopCentered, DesktopEditorial, DesktopStage,
+  PhoneDark,
+  DesktopStage,
 } = window;
 
 // Phone artboard
@@ -49,56 +47,27 @@ function WebFrame({ children }) {
 }
 
 function App() {
-  const t = useTweaks(window.__TWEAK_DEFAULTS);
-  const accent = t.accent;
+  const useMobileFrame = window.matchMedia('(max-width: 900px)').matches;
 
   return (
-    <>
-      <DesignCanvas>
-        <DCSection
-          id="parry-desktop"
-          title="Parry — desktop landing page"
-          subtitle="Parrot mascot · minimal talk-button hero · 3 directions"
-        >
-          <DCArtboard id="d-centered" label="A · Centered" width={DAW} height={DAH}>
-            <WebFrame><DesktopCentered accent={accent}/></WebFrame>
-          </DCArtboard>
-          <DCArtboard id="d-editorial" label="B · Editorial split" width={DAW} height={DAH}>
-            <WebFrame><DesktopEditorial accent={accent}/></WebFrame>
-          </DCArtboard>
-          <DCArtboard id="d-stage" label="C · Stage (dark)" width={DAW} height={DAH}>
-            <WebFrame><DesktopStage accent={accent}/></WebFrame>
-          </DCArtboard>
-        </DCSection>
-
-        <DCSection
-          id="parry-phone"
-          title="Parry — iPhone landing page"
-          subtitle="Same parrot, same minimalism, three iPhone treatments"
-        >
-          <DCArtboard id="p-centered" label="A · Centered" width={PAW} height={PAH}>
-            <PhoneFrame><PhoneCentered accent={accent}/></PhoneFrame>
-          </DCArtboard>
-          <DCArtboard id="p-editorial" label="B · Editorial" width={PAW} height={PAH}>
-            <PhoneFrame><PhoneEditorial accent={accent}/></PhoneFrame>
-          </DCArtboard>
-          <DCArtboard id="p-dark" label="C · Stage (dark)" width={PAW} height={PAH}>
-            <PhoneFrame><PhoneDark accent={accent}/></PhoneFrame>
-          </DCArtboard>
-        </DCSection>
-      </DesignCanvas>
-
-      <TweaksPanel title="Tweaks">
-        <TweakSection label="Accent">
-          <TweakColor
-            label="Color"
-            value={t.accent}
-            options={['#FF5B2E', '#1F8A5B', '#2A6FDB', '#B8336A', '#D4A017', '#1A1815']}
-            onChange={(v) => t.setTweak('accent', v)}
-          />
-        </TweakSection>
-      </TweaksPanel>
-    </>
+    <div style={{
+      margin: 0,
+      minHeight: '100vh',
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      background: '#050505',
+      overflow: 'hidden',
+    }}>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        {useMobileFrame ? (
+          <PhoneFrame><PhoneDark /></PhoneFrame>
+        ) : (
+          <WebFrame><DesktopStage /></WebFrame>
+        )}
+      </div>
+    </div>
   );
 }
 
