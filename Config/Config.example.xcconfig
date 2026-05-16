@@ -1,3 +1,0 @@
-// 1) Copy this file to Config/Config.xcconfig
-// 2) Replace THE_TOKEN below with your Pioneer token
-PIONEER_API_KEY = THE_TOKEN

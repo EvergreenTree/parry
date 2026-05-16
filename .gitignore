@@ -1,26 +1,18 @@
-# Xcode
-DerivedData/
-*.xcworkspace/
-*.xcuserstate
-*.xcuserdata/
-build/
-*.hmap
-*.ipa
-
-# Local secrets and generated config
-pioneer_token.txt
-Config/Config.xcconfig
-
-
-# Local secret folders
-
-tokens/
-
-fal_token.txt
-
-openai_token.txt
-
-pioneer_token.txt
-
+# macOS
 .DS_Store
 
+# Local IDE/build noise
+.vscode/
+
+# iOS app source folders
+Build/
+VoiceToVisual/
+VoiceToVisual.xcodeproj/
+
+# Local secret folders
+tokens/
+Config/
+Config/Config.xcconfig
+
+# Untracked bootstrap script (if you keep it locally)
+bootstrap.sh
