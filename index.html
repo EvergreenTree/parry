@@ -81,6 +81,7 @@
 
   <script>
     (function () {
+      window.__PARRY_APP_READY = false;
       var root = document.getElementById('root');
       var fallback = document.getElementById('fallback-landing');
       var errorBox = document.getElementById('fallback-error');
@@ -128,17 +129,9 @@
       }
 
       window.addEventListener('load', function () {
-        var start = Date.now();
-        var id = setInterval(function () {
-          if (root && root.children && root.children.length > 0) {
-            clearInterval(id);
-            return;
-          }
-          if (Date.now() - start > 2600) {
-            clearInterval(id);
-            revealFallback();
-          }
-        }, 150);
+        setTimeout(function () {
+          if (!window.__PARRY_APP_READY) revealFallback();
+        }, 2000);
       });
     })();
   </script>

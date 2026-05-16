@@ -47,6 +47,25 @@ function WebFrame({ children }) {
 }
 
 function App() {
+  React.useEffect(() => {
+    window.__PARRY_APP_READY = true;
+    const fallback = document.getElementById('fallback-landing');
+    if (fallback) fallback.style.display = 'none';
+  }, []);
+
+  if (
+    typeof IOSDevice !== 'function' ||
+    typeof ChromeWindow !== 'function' ||
+    typeof PhoneDark !== 'function' ||
+    typeof DesktopStage !== 'function'
+  ) {
+    return (
+      <div style={{ padding: 24, fontFamily: 'Inter, system-ui, sans-serif', color: '#F2EFE8', background: '#050505', minHeight: '100vh' }}>
+        Missing design frame dependencies. Check console for load errors.
+      </div>
+    );
+  }
+
   const useMobileFrame = window.matchMedia('(max-width: 900px)').matches;
 
   return (
