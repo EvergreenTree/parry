@@ -30,22 +30,75 @@
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"></script>
+
+  <style>
+    #fallback-landing {
+      display: none;
+      min-height: 100vh;
+      padding: 24px;
+      font-family: Inter, system-ui, sans-serif;
+      color: #1A1815;
+      background: #ECE8E1;
+    }
+    #fallback-landing .card {
+      max-width: 760px;
+      margin: 0 auto;
+      border: 1px solid #ddd4ca;
+      border-radius: 16px;
+      padding: 22px;
+      background: rgba(255,255,255,0.78);
+      box-shadow: 0 16px 40px rgba(23, 21, 16, 0.08);
+    }
+    #fallback-landing h1 { margin: 0 0 12px; font-family: "Instrument Serif", serif; }
+  </style>
 </head>
 <body>
   <div id="root"></div>
+  <main id="fallback-landing">
+    <div class="card">
+      <p style="margin:0 0 8px; color:#7A736A; font-size:12px; letter-spacing:1.4px; text-transform:uppercase;">Parry</p>
+      <h1 style="font-size:44px; line-height:1.02;">Say it. <em style="color:#FF5B2E; font-style:normal;">I’ll repeat.</em></h1>
+      <p style="margin:0; max-width:560px; color:#665f58; line-height:1.55;">Parry mobile + web design showcase is loading. If you still see this card, JavaScript execution is failing and I can help you isolate the exact runtime error.
+      </p>
+      <p style="margin:14px 0 0; color:#8b8177;">Try opening this page in a newer browser and disabling extensions.</p>
+    </div>
+  </main>
 
-  <script type="text/babel" src="Resources/ios-frame.jsx"></script>
-  <script type="text/babel" src="Resources/browser-window.jsx"></script>
-  <script type="text/babel" src="Resources/design-canvas.jsx"></script>
-  <script type="text/babel" src="Resources/tweaks-panel.jsx"></script>
-  <script type="text/babel" src="Resources/parry-shared.jsx"></script>
-  <script type="text/babel" src="Resources/parry-mascot.jsx"></script>
-  <script type="text/babel" src="Resources/parry-phone-centered.jsx"></script>
-  <script type="text/babel" src="Resources/parry-phone-editorial.jsx"></script>
-  <script type="text/babel" src="Resources/parry-phone-dark.jsx"></script>
-  <script type="text/babel" src="Resources/parry-desktop-centered.jsx"></script>
-  <script type="text/babel" src="Resources/parry-desktop-editorial.jsx"></script>
-  <script type="text/babel" src="Resources/parry-desktop-stage.jsx"></script>
-  <script type="text/babel" src="Resources/parry-app.jsx"></script>
+  <script type="text/babel" data-presets="react" src="Resources/ios-frame.jsx"></script>
+  <script type="text/babel" data-presets="react" src="Resources/browser-window.jsx"></script>
+  <script type="text/babel" data-presets="react" src="Resources/design-canvas.jsx"></script>
+  <script type="text/babel" data-presets="react" src="Resources/tweaks-panel.jsx"></script>
+  <script type="text/babel" data-presets="react" src="Resources/parry-shared.jsx"></script>
+  <script type="text/babel" data-presets="react" src="Resources/parry-mascot.jsx"></script>
+  <script type="text/babel" data-presets="react" src="Resources/parry-phone-centered.jsx"></script>
+  <script type="text/babel" data-presets="react" src="Resources/parry-phone-editorial.jsx"></script>
+  <script type="text/babel" data-presets="react" src="Resources/parry-phone-dark.jsx"></script>
+  <script type="text/babel" data-presets="react" src="Resources/parry-desktop-centered.jsx"></script>
+  <script type="text/babel" data-presets="react" src="Resources/parry-desktop-editorial.jsx"></script>
+  <script type="text/babel" data-presets="react" src="Resources/parry-desktop-stage.jsx"></script>
+  <script type="text/babel" data-presets="react" src="Resources/parry-app.jsx"></script>
+
+  <script>
+    (function () {
+      function revealFallback() {
+        var root = document.getElementById('root');
+        var fallback = document.getElementById('fallback-landing');
+        if (!root || !root.children || root.children.length === 0) {
+          if (fallback) fallback.style.display = 'grid';
+          fallback.style.alignItems = 'center';
+          fallback.style.placeItems = 'center';
+        }
+      }
+
+      window.addEventListener('error', function () {
+        var fallback = document.getElementById('fallback-landing');
+        if (fallback) fallback.style.display = 'grid';
+      });
+      window.addEventListener('load', function () {
+        setTimeout(revealFallback, 900);
+      });
+    })();
+  </script>
+
 </body>
 </html>
