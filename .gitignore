@@ -1,0 +1,26 @@
+# Xcode
+DerivedData/
+*.xcworkspace/
+*.xcuserstate
+*.xcuserdata/
+build/
+*.hmap
+*.ipa
+
+# Local secrets and generated config
+pioneer_token.txt
+Config/Config.xcconfig
+
+
+# Local secret folders
+
+tokens/
+
+fal_token.txt
+
+openai_token.txt
+
+pioneer_token.txt
+
+.DS_Store
+
