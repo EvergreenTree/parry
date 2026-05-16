@@ -60,6 +60,7 @@
       <h1 style="font-size:44px; line-height:1.02;">Say it. <em style="color:#FF5B2E; font-style:normal;">I’ll repeat.</em></h1>
       <p style="margin:0; max-width:560px; color:#665f58; line-height:1.55;">Parry mobile + web design showcase is loading. If you still see this card, JavaScript execution is failing and I can help you isolate the exact runtime error.
       </p>
+      <pre id="fallback-error" style="display:none; margin:14px 0 0; background:#fff5e6; border:1px solid #ffd39a; color:#6a4b1d; border-radius:10px; padding:10px; white-space:pre-wrap; font-size:12px; max-width:760px;"></pre>
       <p style="margin:14px 0 0; color:#8b8177;">Try opening this page in a newer browser and disabling extensions.</p>
     </div>
   </main>
@@ -80,22 +81,64 @@
 
   <script>
     (function () {
-      function revealFallback() {
-        var root = document.getElementById('root');
-        var fallback = document.getElementById('fallback-landing');
-        if (!root || !root.children || root.children.length === 0) {
-          if (fallback) fallback.style.display = 'grid';
-          fallback.style.alignItems = 'center';
-          fallback.style.placeItems = 'center';
+      var root = document.getElementById('root');
+      var fallback = document.getElementById('fallback-landing');
+      var errorBox = document.getElementById('fallback-error');
+      var errors = [];
+
+      function setFallbackError(reason) {
+        errors.push(reason);
+        if (errorBox) {
+          errorBox.style.display = 'block';
+          errorBox.textContent = errors.join('\n\n');
         }
       }
 
-      window.addEventListener('error', function () {
+      function revealFallback() {
+        if (!root || !fallback || root.children.length > 0) return;
         var fallback = document.getElementById('fallback-landing');
-        if (fallback) fallback.style.display = 'grid';
+        if (!fallback) return;
+        fallback.style.display = 'grid';
+        fallback.style.alignItems = 'center';
+        fallback.style.placeItems = 'center';
+        if (errors.length === 0) setFallbackError('No runtime error captured yet. React did not mount before the guard timeout.');
+      }
+
+      window.addEventListener('error', function (e) {
+        if (e && e.error && e.error.stack) {
+          setFallbackError((e.error.stack || '').toString());
+        } else if (e && e.message) {
+          setFallbackError(e.message.toString());
+        }
+        revealFallback();
       });
+
+      window.addEventListener('unhandledrejection', function (e) {
+        var reason = (e && e.reason && (e.reason.stack || e.reason.message || e.reason.toString())) || 'Unhandled promise rejection';
+        setFallbackError(reason.toString());
+        revealFallback();
+      });
+
+      if (root && root instanceof Node && window.MutationObserver) {
+        new MutationObserver(function () {
+          if (root.children && root.children.length > 0 && fallback) {
+            fallback.style.display = 'none';
+          }
+        }).observe(root, { childList: true });
+      }
+
       window.addEventListener('load', function () {
-        setTimeout(revealFallback, 900);
+        var start = Date.now();
+        var id = setInterval(function () {
+          if (root && root.children && root.children.length > 0) {
+            clearInterval(id);
+            return;
+          }
+          if (Date.now() - start > 2600) {
+            clearInterval(id);
+            revealFallback();
+          }
+        }, 150);
       });
     })();
   </script>
